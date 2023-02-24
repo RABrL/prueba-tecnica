@@ -17,5 +17,5 @@ clientsAPI(app)
 creditsAPI(app)
 
 app.listen(Config.port, () => {
-  console.log(`Servidor escuchando en http://localhost:${Config.port}`)
+  console.log(`Servidor escuchando en http://localhost:${Config.port}/api/clients`)
 })
