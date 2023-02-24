@@ -1,3 +1,5 @@
+import renderClient from './components/renderClient.js'
+
 const $ = selector => document.querySelector(selector)
 const title = $('.title')
 const clients = $('.clients')
@@ -48,58 +50,21 @@ async function renderHome () {
 clients.addEventListener('click', async () => {
   title.innerText = 'Clients'
   cleanData(container)
-  const tabla = `
-  <div class='button-box' >
-    <button class='openModal' onclick="createFormModal">Create User</button>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Last Name</th>
-        <th>NIT/CC</th>
-        <th>Address</th>
-        <th>City</th>
-        <th>Phone</th>
-        <th>Available quota</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody class="body">
-    </tbody>
-  </table>
-  <a href="#">Show All</a>`
-  container.innerHTML = tabla
-  await fetch('http://localhost:3000/api/clients')
+  const data = await fetch('http://localhost:3000/api/clients')
     .then(res => res.json())
     .then(data => {
       if (data.body.length === 0) throw new Error()
-      const container = $('.data tbody')
-      data.body.forEach(client => {
-        const { name, lastName, dni, address, city, phone, currentCredit } = client
-        const status = true
-        const str = `<tr>
-                        <td>${name}</td>
-                        <td>${lastName}</td>
-                        <td>${dni}</td>
-                        <td>${address}</td>
-                        <td>${city}</td>
-                        <td>${phone}</td>
-                        <td>${currentCredit}</td>
-                        <td class=${status ? 'success' : 'danger'}>Active</td>
-                        <td class="actions">
-                          <i class="fa-solid fa-pen-to-square edit openModal" onclick="${createFormModal('update')}"></i>
-                          <i class="fa-solid fa-trash delete"></i>
-                        </td>
-                    </tr>`
-        container.innerHTML += str
-      })
-    })
-    .catch(e => {
+      return data
+    }).catch(e => {
       console.log(e)
       $('.data tbody').innerHTML = '<p class="text-muted">No hay clientes</p>'
     })
+  renderClient(container, data)
+  $('button.openModal').addEventListener('click', () => {
+    modal.style.display = 'block'
+    createFormModal('create')
+  })
+
   loadButtonsModal()
 })
 
@@ -113,10 +78,11 @@ function cleanData (container) {
 }
 
 function loadButtonsModal () {
-  const btns = document.querySelectorAll('.openModal')
+  const btns = document.querySelectorAll('.edit.openModal')
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
       modal.style.display = 'block'
+      createFormModal('update')
     })
   })
 }
@@ -136,7 +102,7 @@ window.addEventListener('click', (e) => {
 })
 
 function createFormModal (type) {
-  console.log(type);
+  console.log(type)
   cleanData(formConteiner)
   $('.modal-title').innerText = `${type.toUpperCase()}`
   const modalHtml = `
