@@ -4,7 +4,7 @@ const clients = $('.clients')
 const home = $('.home')
 const credits = $('.credits')
 const container = $('.data')
-const modalContent = $('.form-content')
+const formConteiner = $('.form-content')
 
 document.addEventListener('DOMContentLoaded', async () => {
   renderHome()
@@ -50,7 +50,7 @@ clients.addEventListener('click', async () => {
   cleanData(container)
   const tabla = `
   <div class='button-box' >
-    <button class='openModal' onclick=${createClientModal()}>Create User</button>
+    <button class='openModal' onclick="createFormModal">Create User</button>
   </div>
   <table>
     <thead>
@@ -89,7 +89,7 @@ clients.addEventListener('click', async () => {
                         <td>${currentCredit}</td>
                         <td class=${status ? 'success' : 'danger'}>Active</td>
                         <td class="actions">
-                          <i class="fa-solid fa-pen-to-square edit openModal"></i>
+                          <i class="fa-solid fa-pen-to-square edit openModal" onclick="${createFormModal('update')}"></i>
                           <i class="fa-solid fa-trash delete"></i>
                         </td>
                     </tr>`
@@ -116,7 +116,6 @@ function loadButtonsModal () {
   const btns = document.querySelectorAll('.openModal')
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
-      cleanData(modalContent)
       modal.style.display = 'block'
     })
   })
@@ -136,70 +135,81 @@ window.addEventListener('click', (e) => {
   }
 })
 
-function createClientModal () {
-  $('.modal-title').innerText = 'Create Client'
+function createFormModal (type) {
+  console.log(type);
+  cleanData(formConteiner)
+  $('.modal-title').innerText = `${type.toUpperCase()}`
   const modalHtml = `
-  <form action="http://localhost:3000/api/clients" method="POST">
-        <div class="left">
-          <div>
+    <form action="http://localhost:3000/api/clients" method="POST">
+          <div class="left">
+            <div>
+              <div class="input-box">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Your Name">
+              </div>
+              <div class="input-box">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Your Name">
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" name="dni" placeholder="Your DNI">
+              </div>
+              <div class="input-box">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" placeholder="Your Address">
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <label for="city">City:</label>
+                <input type="search" list="cities" name="city" placeholder="Your City">
+                <datalist id="cities">
+                  <option value="Bucaramanga"></option>
+                </datalist>
+              </div>
+              <div class="input-box">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone"name="phone" placeholder="Your Phone Number"> 
+              </div>
+            </div>
+            <div>
+            ${type === 'create'
+              ? `
+                <div class="input-box">
+                  <label for="status">Status:</label>
+                  <select id="status" id="credit-status" name="status">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              `
+              : `
+              <div class="input-box">
+                <label for="contact">Contact:</label>
+                <input type='text' id='contact' name='contact' placeholder='Some Contact'>
+              </div>
+              `}
+            </div>
+            <input type="submit" class="save" value="Save Changes">
+          </div>
+          <div class="right">
             <div class="input-box">
-              <label for="name">Name:</label>
-              <input type="text" id="name" name="name" placeholder="Your Name">
+              <label for="limitCredit">Limit Credit:</label>
+              <input type="number" id="limitCredit" name="limitCredit" placeholder="Your Limit Credit">
             </div>
             <div class="input-box">
-              <label for="lastName">Last Name:</label>
-              <input type="text" id="lastName" name="lastName" placeholder="Your Name">
-            </div>
-          </div>
-          <div>
-            <div class="input-box">
-              <label for="dni">DNI:</label>
-              <input type="text" id="dni" name="dni" placeholder="Your DNI">
+              <label for="curerntCredit">Current Credit:</label>
+              <input type="number" id="curentCredit" name="currentCredit" placeholder="Your Current Credit">
             </div>
             <div class="input-box">
-              <label for="address">Address:</label>
-              <input type="text" id="address" name="address" placeholder="Your Address">
+              <label for="daysGrace">Days of Grace:</label>
+              <input type="number" id="daysGrace" name="daysGrace" placeholder="Your Days of grace">
             </div>
           </div>
-          <div>
-            <div class="input-box">
-              <label for="city">City:</label>
-              <input type="search" list="cities" name="city" placeholder="Your City">
-              <datalist id="cities">
-                <option value="Bucaramanga"></option>
-              </datalist>
-            </div>
-            <div class="input-box">
-              <label for="phone">Phone:</label>
-              <input type="tel" id="phone"name="phone" placeholder="Your Phone Number"> 
-            </div>
-          </div>
-          <div>
-            <div class="input-box">
-              <label for="status">Status:</label>
-              <select id="status" id="credit-status" name="status">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
-          </div>
-          <input type="submit" class="save" value="Save Changes">
-        </div>
-        <div class="right">
-          <div class="input-box">
-            <label for="limitCredit">Limit Credit:</label>
-            <input type="number" id="limitCredit" name="limitCredit" placeholder="Your Limit Credit">
-          </div>
-          <div class="input-box">
-            <label for="curerntCredit">Current Credit:</label>
-            <input type="number" id="curentCredit" name="currentCredit" placeholder="Your Current Credit">
-          </div>
-          <div class="input-box">
-            <label for="daysGrace">Days of Grace:</label>
-            <input type="number" id="daysGrace" name="daysGrace" placeholder="Your Days of grace">
-          </div>
-        </div>
-      </form>
-  `
-  modalContent.innerHTML = modalHtml
+        </form>
+    `
+  formConteiner.innerHTML = modalHtml
 }
