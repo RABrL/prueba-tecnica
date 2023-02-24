@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prueba tecnica</title>
-  <!-- Custom css -->
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <div class="container">
+<div class="container">
     <aside>
       <div class="top">
         <img src="" alt="">
@@ -39,7 +26,7 @@
     <!-- ============== END OF ASIDE ============ -->
 
     <main>
-      <h1 class="title" onclick="createFormModal"></h1>
+      <h1 class="title"></h1>
       <div class="data">
 
       </div>
@@ -54,9 +41,3 @@
       </div>
     </div>
   </div>
-
-  <script src="app.js" type="module"></script>
-  <script src="https://kit.fontawesome.com/d7042d0bf6.js" crossorigin="anonymous"></script>
-</body>
-
-</html>

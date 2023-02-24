@@ -341,7 +341,7 @@ main table tbody tr:last-child td{
   overflow: hidden;
   border-radius: 3rem;
   padding: var(--card-padding);
-  margin:10% auto;
+  margin: 5% auto 0;
   width: 60%;
 }
 
